@@ -4,13 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import Document from "./Document";
 
 async function Documents() {
-  auth().protect();
-
-  const { userId } = await auth();
-
-  if (!userId) {
-    throw new Error("User not found");
-  }
+  const { userId } = await auth.protect();
 
   const documentsSnapshot = await adminDb
     .collection("users")

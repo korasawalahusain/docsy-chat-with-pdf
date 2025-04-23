@@ -7,9 +7,7 @@ import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 
 export async function deleteDocument(docId: string) {
-  auth().protect();
-
-  const { userId } = await auth();
+  const { userId } = await auth.protect();
 
   // Delete the document from the database
   await adminDb
@@ -26,7 +24,7 @@ export async function deleteDocument(docId: string) {
     .delete();
 
   // Delete all embeddings associated with the document
-  const index = await pineconeClient.index(indexName);
+  const index = pineconeClient.index(indexName);
   await index.namespace(docId).deleteAll();
 
   // Revalidate the dashboard page to ensure the documents are up to date

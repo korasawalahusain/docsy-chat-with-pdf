@@ -24,7 +24,7 @@ const model = new ChatGoogleGenerativeAI({
 export const indexName = process.env.PINECONE_INDEX!;
 
 async function fetchMessagesFromDB(docId: string) {
-  const { userId } = auth();
+  const { userId } = await auth();
   if (!userId) {
     throw new Error("User not found");
   }
@@ -56,7 +56,7 @@ async function fetchMessagesFromDB(docId: string) {
 }
 
 export async function generateDocs(docId: string) {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     throw new Error("User not found");
@@ -109,7 +109,7 @@ async function namespaceExists(
 }
 
 export async function generateEmbeddingsInPineconeVectorStore(docId: string) {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     throw new Error("User not found");

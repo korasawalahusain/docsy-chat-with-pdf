@@ -6,9 +6,7 @@ import stripe from "@/lib/stripe";
 import { auth } from "@clerk/nextjs/server";
 
 export async function createStripePortal() {
-  auth().protect();
-
-  const { userId } = await auth();
+  const { userId } = await auth.protect();
 
   if (!userId) {
     throw new Error("User not found");

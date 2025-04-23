@@ -10,8 +10,7 @@ async function ChatToFilePage({
     id: string;
   };
 }) {
-  auth().protect();
-  const { userId } = await auth();
+  const { userId } = await auth.protect();
 
   const ref = await adminDb
     .collection("users")
