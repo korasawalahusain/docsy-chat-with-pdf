@@ -1,12 +1,12 @@
 import { auth } from "@clerk/nextjs/server";
 import { PineconeStore } from "@langchain/pinecone";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { createRetrievalChain } from "langchain/chains/retrieval";
 import { HumanMessage, AIMessage } from "@langchain/core/messages";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { createStuffDocumentsChain } from "langchain/chains/combine_documents";
-import { TogetherAI } from "@langchain/community/llms/togetherai";
 import { TogetherAIEmbeddings } from "@langchain/community/embeddings/togetherai";
 import { createHistoryAwareRetriever } from "langchain/chains/history_aware_retriever";
 import { Index, RecordMetadata } from "@pinecone-database/pinecone";
@@ -15,9 +15,10 @@ import pineconeClient from "./pinecone";
 import { adminDb } from "../firebaseAdmin";
 
 // Initialize the Together model with API key and model name
-const model = new TogetherAI({
-  apiKey: process.env.TOGETHER_AI_API_KEY!,
-  model: "meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
+const model = new ChatGoogleGenerativeAI({
+  temperature: 0.3,
+  model: "gemini-2.0-flash-lite",
+  apiKey: process.env.GEMINI_API_KEY!,
 });
 
 export const indexName = process.env.PINECONE_INDEX!;
@@ -119,7 +120,6 @@ export async function generateEmbeddingsInPineconeVectorStore(docId: string) {
   // Generate embeddings (numerical representations) for the split documents
   console.log("--- Generating embeddings... ---");
   const embeddings = new TogetherAIEmbeddings({
-    apiKey: process.env.TOGETHER_AI_API_KEY!,
     model: "togethercomputer/m2-bert-80M-32k-retrieval",
   });
 
@@ -145,18 +145,14 @@ export async function generateEmbeddingsInPineconeVectorStore(docId: string) {
       `--- Storing the embeddings in namespace ${docId} in the ${indexName} Pinecone vector store... ---`
     );
 
-    try {
-      pineconeVectorStore = await PineconeStore.fromDocuments(
-        splitDocs,
-        embeddings,
-        {
-          pineconeIndex: index,
-          namespace: docId,
-        }
-      );
-    } catch (error) {
-      console.log("fromDocuments: ", error);
-    }
+    pineconeVectorStore = await PineconeStore.fromDocuments(
+      splitDocs,
+      embeddings,
+      {
+        pineconeIndex: index,
+        namespace: docId,
+      }
+    );
 
     return pineconeVectorStore;
   }

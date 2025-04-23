@@ -39,7 +39,7 @@ function useSubscription() {
   }, [snapshot]);
 
   useEffect(() => {
-    if (!filesSnapshot || hasActiveMembership === null) return;
+    if (!filesSnapshot) return;
 
     const files = filesSnapshot.docs;
     const usersLimit = hasActiveMembership ? PRO_LIMIT : FREE_LIMIT;

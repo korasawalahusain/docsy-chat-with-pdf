@@ -6,8 +6,8 @@ import { generateLangchainCompletion } from "@/lib/langchain";
 import { auth } from "@clerk/nextjs/server";
 // import { generateLangchainCompletion } from "@/lib/langchain";
 
-const PRO_LIMIT = 20;
-const FREE_LIMIT = 2;
+const FREE_LIMIT = 3;
+const PRO_LIMIT = 100;
 
 export async function askQuestion(id: string, question: string) {
   auth().protect();
