@@ -2,8 +2,6 @@ import { getStorage } from "firebase-admin/storage";
 import { getFirestore } from "firebase-admin/firestore";
 import { initializeApp, getApps, App, getApp, cert } from "firebase-admin/app";
 
-const serviceKey = require("@/service_key.json");
-
 let app: App;
 
 const serviceAccount = JSON.parse(
