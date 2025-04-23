@@ -6,9 +6,13 @@ const serviceKey = require("@/service_key.json");
 
 let app: App;
 
+const serviceAccount = JSON.parse(
+  process.env.FIREBASE_SERVICE_ACCOUNT_KEY as string
+);
+
 if (getApps().length === 0) {
   app = initializeApp({
-    credential: cert(serviceKey),
+    credential: cert(serviceAccount),
   });
 } else {
   app = getApp();
