@@ -1,7 +1,12 @@
+import { Metadata } from "next";
 import Chat from "@/components/Chat";
 import PdfView from "@/components/PdfView";
 import { adminDb } from "@/firebaseAdmin";
 import { auth } from "@clerk/nextjs/server";
+
+export const metadata: Metadata = {
+  title: "Docsy | Chat",
+};
 
 async function ChatToFilePage({
   params: { id },

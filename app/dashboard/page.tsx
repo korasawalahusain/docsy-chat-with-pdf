@@ -1,6 +1,10 @@
+import { Metadata } from "next";
 import Documents from "@/components/Documents";
 
 export const dynamic = "force-dynamic";
+export const metadata: Metadata = {
+  title: "Docsy | Dashboard",
+};
 
 function Dashboard() {
   return (
