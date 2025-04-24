@@ -7,13 +7,8 @@ import useSubscription from "@/hooks/useSubscription";
 import getStripe from "@/lib/stripe-js";
 import { useUser } from "@clerk/nextjs";
 import { CheckIcon } from "lucide-react";
-import { Metadata } from "next";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-
-export const metadata: Metadata = {
-  title: "Docsy | Upgrade",
-};
 
 export type UserDetails = {
   email: string;
